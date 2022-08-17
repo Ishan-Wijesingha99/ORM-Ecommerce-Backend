@@ -14,3 +14,7 @@ app.use(routes);
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}!`);
 });
+
+console.log(process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,)
