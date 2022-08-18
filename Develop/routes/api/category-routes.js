@@ -21,8 +21,22 @@ router.get('/:paramId', async (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // create a new category
-  res.send('POST /api/categories route')
+ 
+  const newObject = req.body
+
+  // need to change the database so that the Tag table actually has the new object
+  Category.create(newObject)
+  .then(async (newCategory) => {
+
+  const categoryData = await Category.findAll()
+
+  return res.json(categoryData)
+
+  }).catch(err => {
+    console.log(err)
+    res.status(400).json(err)
+  })
+  
 
 });
 

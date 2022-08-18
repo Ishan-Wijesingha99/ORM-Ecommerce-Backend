@@ -24,7 +24,22 @@ router.get('/:paramId', async (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // create a new tag
+
+  const newObject = req.body
+
+  // need to change the database so that the Tag table actually has the new object
+  Tag.create(newObject)
+  .then(async (newTag) => {
+
+  const tagData = await Tag.findAll()
+
+  return res.json(tagData)
+
+  }).catch(err => {
+    console.log(err)
+    res.status(400).json(err)
+  })
+
 });
 
 router.put('/:id', (req, res) => {
