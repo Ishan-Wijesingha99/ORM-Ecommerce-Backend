@@ -1,6 +1,11 @@
+
+// import sequelize module
 const Sequelize = require('sequelize');
+
+// use this to get access to environmental variables
 require('dotenv').config();
 
+// set up sequelize connection
 const sequelize = process.env.JAWSDB_URL
 ? new Sequelize(process.env.JAWSDB_URL)
 : new Sequelize(
@@ -16,6 +21,7 @@ const sequelize = process.env.JAWSDB_URL
   }
 );
 
+// export sequelize
 module.exports = sequelize;
 
 

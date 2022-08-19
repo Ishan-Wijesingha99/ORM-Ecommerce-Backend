@@ -1,9 +1,12 @@
-const { Model, DataTypes } = require('sequelize');
 
+// import modules
+const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
-class ProductTag extends Model {}
 
+
+// creating ProductTag model
+class ProductTag extends Model {}
 ProductTag.init(
   {
     product_tag_id: {
@@ -36,4 +39,7 @@ ProductTag.init(
   }
 );
 
+
+
+// exporting ProductTag model
 module.exports = ProductTag;

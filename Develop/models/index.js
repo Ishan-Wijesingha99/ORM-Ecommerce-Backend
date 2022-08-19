@@ -37,6 +37,7 @@ Product.belongsToMany(Tag, {
 
 
 
+// export models
 module.exports = {
   Product,
   Category,
