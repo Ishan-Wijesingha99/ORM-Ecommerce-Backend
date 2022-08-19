@@ -6,22 +6,40 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', async (req, res) => {
   
-  const productData = await Product.findAll()
+  try {
 
-  return res.json(productData)
+    const productData = await Product.findAll()
+
+    return res.json(productData)
+    
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
 
 });
 
 // get one product
 router.get('/:paramId', async (req, res) => {
 
-  const productData = await Product.findAll()
+  try {
+    
+    const productData = await Product.findAll()
 
-  const {paramId} = req.params
+    const {paramId} = req.params
 
-  const singleObject = productData.find(object => object.product_id === Number(paramId))
+    const singleObject = productData.find(object => object.product_id === Number(paramId))
 
-  return res.json(singleObject)
+    return res.json(singleObject)
+
+  } catch (error) {
+    
+    console.log(error)
+    res.status(400).json(error)
+
+  }
 
 });
 
@@ -59,30 +77,50 @@ router.post('/', (req, res) => {
 
 // update product
 router.put('/:id', async (req, res) => {
-  // update product data
-  await Product.update(req.body, {
-    where: {
-      product_id: Number(req.params.id),
-    },
-  })
 
-  const productData = await Product.findAll()
+  try {
+    
+    // update product data
+    await Product.update(req.body, {
+      where: {
+        product_id: Number(req.params.id),
+      },
+    })
 
-  return res.json(productData)
+    const productData = await Product.findAll()
+
+    return res.json(productData)
+
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
 
 });
 
 router.delete('/:id', async (req, res) => {
-  // delete one product by its `id` value
-  await Product.destroy(
-    {
-      where: {product_id: Number(req.params.id)}
-    }
-  )
 
-  const productData = await Product.findAll()
+  try {
 
-  res.json(productData)
+    // delete one product by its `id` value
+    await Product.destroy(
+      {
+        where: {product_id: Number(req.params.id)}
+      }
+    )
+
+    const productData = await Product.findAll()
+
+    res.json(productData)
+
+  } catch (error) {
+    
+    console.log(error)
+    res.status(400).json(error)
+
+  }
 
 });
 

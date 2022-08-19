@@ -6,38 +6,59 @@ const { Category, Product, ProductTag } = require('../../models');
 
 router.get('/', async (req, res) => {
   
-  const categoryData = await Category.findAll()
+  try {
 
-  return res.json(categoryData)
+    const categoryData = await Category.findAll()
+    return res.json(categoryData)
+
+  } catch (error) {
+
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
+
 });
 
 router.get('/:paramId', async (req, res) => {
-  const categoryData = await Category.findAll()
 
-  const {paramId} = req.params
+  try {
 
-  const singleObject = categoryData.find(object => object.category_id === Number(paramId))
-  
-  return res.json(singleObject)
+    const categoryData = await Category.findAll()
+
+    const {paramId} = req.params
+
+    const singleObject = categoryData.find(object => object.category_id === Number(paramId))
+    
+    return res.json(singleObject)
+
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
+
 });
 
 router.post('/', (req, res) => {
  
-  const newObject = req.body
+  try {
 
-  // need to change the database so that the Tag table actually has the new object
-  Category.create(newObject)
-  .then(async (newCategory) => {
+    const newObject = req.body
 
-  const categoryData = await Category.findAll()
+    await Category.create(newObject)
 
-  return res.json(categoryData)
+    const categoryData = await Category.findAll()
 
-  }).catch(err => {
-    console.log(err)
-    res.status(400).json(err)
-  })
-  
+    return res.json(categoryData)
+
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
 
 });
 
@@ -45,32 +66,51 @@ router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   // update a tag's name by its `id` value
 
-  const {category_name} = req.body
+  try {
+    
+    const {category_name} = req.body
 
-  await Category.update(
-    {category_name}
-    ,
-    {
-      where: {category_id: req.params.id}
-    }
-  )
+    await Category.update(
+      {category_name}
+      ,
+      {
+        where: {category_id: req.params.id}
+      }
+    )
+    
+    const categoryData = await Category.findAll()
+
+    return res.json(categoryData)
+
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
   
-  const categoryData = await Category.findAll()
-
-  return res.json(categoryData)
 });
 
 router.delete('/:id', async (req, res) => {
   
-  await Category.destroy(
-    {
-      where: {category_id: Number(req.params.id)}
-    }
-  )
+  try {
 
-  const categoryData = await Category.findAll()
+    await Category.destroy(
+      {
+        where: {category_id: Number(req.params.id)}
+      }
+    )
+  
+    const categoryData = await Category.findAll()
+  
+    res.json(categoryData)
 
-  res.json(categoryData)
+  } catch (error) {
+    
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
 
 });
 
