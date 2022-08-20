@@ -57,48 +57,30 @@ router.get('/:paramId', async (req, res) => {
 });
 
 // create new product
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+  try {
 
-  Product.create(req.body)
-    .then((product) => {
+    // create a variable to store the body of the POST request
+    const newObject = req.body
 
-      // if there's product tags, we need to create pairings to bulk create in the ProductTag model
-      if (req.body.tagIds.length) {
+    // create a new row in the Product model for whatever was in the body
+    await Product.create(newObject)
 
-        const productTagIdArr = req.body.tagIds.map((tag_id) => {
+    // store all rows in Product model as a javascript array
+    const productData = await Product.findAll()
 
-          return {
-            product_id: product.id,
-            tag_id,
-          };
+    // return the entire productData as JSON for the user as the response
+    return res.status(200).json(productData)
 
-        });
-
-        return ProductTag.bulkCreate(productTagIdArr);
-
-      }
-
-      // if no product tags, just respond
-      res.status(200).json(product);
-
-    })
-    .then((productTagIds) => res.status(200).json(productTagIds))
-    .catch((err) => {
-      
-      // if there is an error, log the error to the console, then return the error as JSON for the user
-      console.log(err);
-      res.status(400).json(err);
+  } catch (error) {
     
-    });
+    // if there is an error, log the error to the console, then return the error as JSON for the user
+    console.log(error)
+    return res.status(400).json(error)
+
+  }
+   
 });
 
 // update product
